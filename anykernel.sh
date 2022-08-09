@@ -34,11 +34,17 @@ set_perm_recursive 0 0 750 750 $RAMDISK/init* $RAMDISK/sbin;
 
 # begin passthrough patch
 passthrough() {
-if [ ! "$(getprop persist.sys.fuse.passthrough.enable)" ]; then
+android_ver=$(file_getprop /system/build.prop ro.build.version.release);
+fuse_passthrough=$(getprop persist.sys.fuse.passthrough.enable);
+
+if [ $android_ver -gt 11 ] && [ $fuse_passthrough != "true" ]; then
 	ui_print "Remounting /vendor as rw..."
 	$home/tools/busybox mount -o rw,remount /vendor
-	ui_print "Patching system's build prop for FUSE Passthrough..."
+	ui_print "Patching vendor's build prop for FUSE Passthrough..."
 	patch_prop /vendor/build.prop "persist.sys.fuse.passthrough.enable" "true"
+else
+	ui_print "Ignoring FUSE Passthrough installation..."
+	ui_print "Unsupported Android version or previously installed"
 fi
 } # end passthrough patch
 
