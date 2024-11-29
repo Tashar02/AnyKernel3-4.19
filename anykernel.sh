@@ -18,7 +18,7 @@ do.cleanuponabort=0
 device.name1=redwood
 device.name2=redwoodin
 device.name3=lisa
-supported.versions=12-14
+supported.versions=12-15
 supported.patchlevels=
 supported.vendorpatchlevels=
 '; } # end properties
